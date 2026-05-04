@@ -1,0 +1,22 @@
+{
+  "name": "ci-cd-learning",
+  "version": "1.0.0",
+  "main": "server.js",
+  "author": "muhammadnoman",
+  "license": "MIT",
+   "scripts": {
+    "start": "node server.js",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "test": "jest",
+    "test:watch": "jest --watch"
+  },
+  "dependencies": {
+    "eslint": "^10.3.0",
+    "jest": "^30.3.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "globals": "^17.6.0"
+  }
+}
