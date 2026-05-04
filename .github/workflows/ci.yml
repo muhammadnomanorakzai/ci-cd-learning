@@ -1,0 +1,66 @@
+# CI Pipeline — Continuous Integration
+# Kab chale: Har push pe aur har Pull Request pe
+name: CI Pipeline
+
+on:
+  push:
+    branches: [main, develop]   # in branches pe push ho to chale
+  pull_request:
+    branches: [main]            # main pe PR aaye to chale
+
+jobs:
+
+  # ─────────────────────────────────────────
+  # JOB 1: Code Quality Check
+  # ─────────────────────────────────────────
+  lint:
+    name: ESLint Check
+    runs-on: ubuntu-latest      # GitHub ka free Linux server
+
+    steps:
+      # Step 1: Code download karo GitHub se
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      # Step 2: Node.js setup karo
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'yarn'           # npm cache karo — fast build
+
+      # Step 3: Dependencies install karo
+      - name: Install Dependencies
+        run: yarn ci
+
+      # Step 4: ESLint run karo
+      - name: Run ESLint
+        run: yarn run lint
+
+  # ─────────────────────────────────────────
+  # JOB 2: Tests
+  # ─────────────────────────────────────────
+  test:
+    name: Jest Tests
+    runs-on: ubuntu-latest
+    needs: lint                  # lint pass ho tab hi test chale
+
+    steps:
+      # Step 1: Code download karo
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      # Step 2: Node.js setup karo
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+          cache: 'yarn'
+
+      # Step 3: Dependencies install karo
+      - name: Install Dependencies
+        run: yarn ci
+
+      # Step 4: Tests run karo
+      - name: Run Tests
+        run: yarn test
